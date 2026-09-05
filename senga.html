@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Senga</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap');
+
+  :root{
+    --cream:#FBF3EE;
+    --blush:#E9B8BC;
+    --plum:#5B3244;
+    --maroon:#40202E;
+    --gold:#C79A5B;
+    --line: rgba(64,32,46,0.14);
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--cream);
+    color:var(--maroon);
+    font-family:'Manrope', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior:none;
+  }
+
+  body{
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+
+  .petal{
+    position:fixed;
+    top:-40px;
+    border-radius:50% 0 50% 50%;
+    background:var(--blush);
+    opacity:0.55;
+    pointer-events:none;
+    animation:fall linear forwards;
+  }
+  @keyframes fall{
+    to{ transform: translateY(115vh) rotate(200deg); }
+  }
+
+  .stage{
+    width:100%;
+    max-width:420px;
+    text-align:center;
+    position:relative;
+    z-index:1;
+  }
+
+  .heart-bg{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:min(92vw, 480px);
+    height:min(92vw, 480px);
+    z-index:0;
+    pointer-events:none;
+  }
+  .heart-bg svg{ width:100%; height:100%; }
+  .heart-bg .initials{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:56px;
+    fill:var(--plum);
+    opacity:0.10;
+  }
+
+  .eyebrow{
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--gold);
+    margin:0 0 6px;
+  }
+
+  h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:42px;
+    line-height:1.1;
+    margin:0 0 18px;
+    color:var(--plum);
+  }
+
+  .lead{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--maroon);
+    opacity:0.85;
+    margin:0 0 34px;
+    padding:0 8px;
+  }
+
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:38px 26px;
+    min-height:230px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    box-shadow: 0 18px 40px -22px rgba(64,32,46,0.35);
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+  }
+
+  .card.leaving{ transform: translateY(-14px) scale(.97); opacity:0; }
+  .card.entering{ transform: translateY(14px) scale(.98); opacity:0; }
+
+  .mark{
+    font-family:'Cormorant Garamond', serif;
+    font-size:30px;
+    color:var(--gold);
+    line-height:1;
+  }
+
+  .message{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:23px;
+    line-height:1.45;
+    color:var(--plum);
+  }
+
+  .progress{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin:22px 0 26px;
+  }
+  .dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--line);
+    transition: background .3s ease, transform .3s ease;
+  }
+  .dot.active{ background:var(--gold); transform:scale(1.25); }
+
+  button{
+    font-family:'Manrope', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:#fff;
+    background:var(--plum);
+    border:none;
+    border-radius:999px;
+    padding:15px 34px;
+    cursor:pointer;
+    transition: transform .15s ease, background .2s ease;
+  }
+  button:active{ transform:scale(.96); }
+  button:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+  .hint{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--maroon);
+    opacity:0.55;
+  }
+
+  .final{ display:none; }
+  .final.show{ display:flex; }
+  .final .message{ font-size:25px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .dot{ transition:none; }
+    .petal{ animation:none; display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="heart-bg" aria-hidden="true">
+  <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 172
+             C 40 130, 6 92, 6 55
+             C 6 26, 28 8, 54 8
+             C 74 8, 90 20, 100 38
+             C 110 20, 126 8, 146 8
+             C 172 8, 194 26, 194 55
+             C 194 92, 160 130, 100 172 Z"
+          fill="none" stroke="var(--blush)" stroke-width="2.5" opacity="0.55"/>
+    <text x="72" y="100" text-anchor="middle" class="initials">Z</text>
+    <text x="128" y="100" text-anchor="middle" class="initials">B</text>
+  </svg>
+</div>
+
+<div class="stage">
+  <p class="eyebrow">senga</p>
+  <h1>Bir necha gap,<br>faqat sen uchun</h1>
+  <p class="lead">Har bosganingda bittadan. Shoshilma — har biri o'z o'rnida aytiladi.</p>
+
+  <div class="card" id="card">
+    <span class="mark">❝</span>
+    <p class="message" id="msg"></p>
+  </div>
+
+  <div class="progress" id="progress"></div>
+
+  <button id="nextBtn" onclick="next()">Davom et</button>
+  <p class="hint" id="hint">1 / 8</p>
+</div>
+
+<script>
+const messages = [
+  "Siz yonimda bo'lsangiz, dunyo ancha kichikroq va yengilroq tuyuladi.",
+  "Ovozingizni eshitsam, kayfiyatim bir zumda o'zgaradi — buni sizga hech qachon aytmagandim.",
+  "Siz bilan o'tgan eng oddiy daqiqalar ham, menga eng yodda qoladigan lahzalarga aylanadi.",
+  "Bir narsa demasangiz ham, yonimda jim turishning o'zi menga yetadi.",
+  "Sizni boshqa hech kim bilan solishtirmayman — chunki solishtiradigani yo'q.",
+  "Uzoqda bo'lsam ham, xayolim ko'pincha bir tomonga — sizga qarab ketadi.",
+  "Kulganingiz — kunimni yaxshilash uchun menga yetarli sabab.",
+  "Har qanday kuningizda tog' bo'lib turishni istayman.",
+  "Baxtli kunlarimda yuragimning bir chekkasida sizga joy bor, buni unutmang."
+];
+
+let i = 0;
+const msgEl = document.getElementById('msg');
+const card = document.getElementById('card');
+const hint = document.getElementById('hint');
+const btn = document.getElementById('nextBtn');
+const progress = document.getElementById('progress');
+
+messages.forEach((_, idx) => {
+  const d = document.createElement('span');
+  d.className = 'dot' + (idx === 0 ? ' active' : '');
+  progress.appendChild(d);
+});
+
+function render(){
+  msgEl.textContent = messages[i];
+  hint.textContent = (i+1) + ' / ' + messages.length;
+  [...progress.children].forEach((d, idx) => d.classList.toggle('active', idx === i));
+  btn.textContent = (i === messages.length - 1) ? 'Yakunlash' : 'Davom et';
+}
+
+function spawnPetal(){
+  const p = document.createElement('div');
+  const size = 8 + Math.random()*10;
+  p.className = 'petal';
+  p.style.left = Math.random()*100 + 'vw';
+  p.style.width = size + 'px';
+  p.style.height = size + 'px';
+  p.style.animationDuration = (4 + Math.random()*3) + 's';
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 8000);
+}
+
+function next(){
+  if (i === messages.length - 1){
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    card.classList.add('leaving');
+    setTimeout(() => {
+      msgEl.textContent = "Seni qalbim bilan yaxshi ko'rishni boshladim. O'zimizni eqqa-beqqa tashlamaylik, KICHKINA ZULAYHOGINAM. \u2764";
+      card.classList.remove('leaving');
+      card.classList.add('entering');
+      requestAnimationFrame(() => card.classList.remove('entering'));
+      hint.textContent = 'tugadi';
+      btn.style.display = 'none';
+      for(let k=0;k<10;k++) setTimeout(spawnPetal, k*150);
+    }, 350);
+    return;
+  }
+  card.classList.add('leaving');
+  setTimeout(() => {
+    i++;
+    render();
+    card.classList.remove('leaving');
+    card.classList.add('entering');
+    requestAnimationFrame(() => card.classList.remove('entering'));
+  }, 350);
+}
+
+render();
+</script>
+</body>
+</html>
